@@ -1,0 +1,8 @@
+{
+  "name": "igb-voronoi",
+  "version": "0.0.1",
+  "description": "A utility for creating voronoi diagrams with D3 and converting SVGs to PNGs",
+  "dependencies": {
+    "d3": "*"
+  }
+}
