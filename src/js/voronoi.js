@@ -12,9 +12,10 @@ var width = 600;
 var svg = d3.select(document.body).append('svg')
     .attr('xmlns', 'http://www.w3.org/2000/svg')
         .attr('height', height)
-        .attr('width', width);
-//
+    .attr('width', width);
 
+
+svg.append('style').text('.links { stroke: #d4b9da;  stroke-opacity: 0.2;}\n.polygons {fill: none; stroke: #df65b0; }.polygons :sfirst-child {fill: #f00;} .sites { fill: #d4b9da; stroke: #d4b9da; } .sites :first-child {fill: #fff;}');
 
 var sites = d3.range(100)
     .map(function(d) { return [Math.random() * width, Math.random() * height]; });
