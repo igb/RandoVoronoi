@@ -3,19 +3,45 @@ var d3 = require('d3');
 var jsdom = require('node-jsdom');
 
 
+eval(fs.readFileSync('./src/js/style.js', 'utf8'));
+eval(fs.readFileSync('./src/js/colorbrewer.js', 'utf8'));
+
+var swatches = [Blues, Greens, Greys, Oranges, Purples, Reds];
+
+
+
+var swatch =  swatches[Math.floor(Math.random() * (swatches.length))]; 
+console.log(swatch);
+
+var linkStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
+var linkStrokeOpacity = "0.2";
+var polygonFillColor = swatch[Math.floor(Math.random() * (swatch.length))];
+var polygonStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
+var polygonStrokeWidth = Math.floor(Math.random() * (6) + 1) + "px";
+var sitesFillColor, sitesStrokeColor  = swatch[Math.floor(Math.random() * (swatch.length))];
+var sitesFillOpacity, sitesStrokeOpacity = "1.0";
+
+if ( Math.floor(Math.random() * (2)) == 0  ) {
+  linkStrokeOpacity = "0.0";
+  sitesFillOpacity, sitesStrokeOpacity = "0.0";
+ console.log("not showing links");
+}
+
+
 var document = jsdom.jsdom();
 
 
 
-var height = 600;
-var width = 600;
+var height = 1024;
+var width = 1024;
 
 var svg = d3.select(document.body).append('svg')
     .attr('xmlns', 'http://www.w3.org/2000/svg')
         .attr('height', height)
     .attr('width', width);
 
-var style = fs.readFileSync('style.css', 'utf8');
+var style = getStyle(linkStrokeColor, linkStrokeOpacity, polygonFillColor, polygonStrokeColor, polygonStrokeWidth, sitesFillColor, sitesStrokeColor, sitesFillOpacity, sitesStrokeOpacity);
+
 
 
 svg.append('style').text(style);
@@ -48,18 +74,6 @@ var site = svg.append("g")
     .attr("r", 2.5)
     .call(redrawSite);
 
-function moved() {
-  sites[0] = d3.mouse(this);
-  redraw();
-}
-
-function redraw() {
-    var diagram = voronoi(sites);
-    polygon = polygon.data(diagram.polygons()).call(redrawPolygon);
-    link = link.data(diagram.links()), link.exit().remove();
-    link = link.enter().append("line").merge(link).call(redrawLink);
-    site = site.data(sites).call(redrawSite);
-}
 
 function redrawPolygon(polygon) {
     polygon
@@ -79,7 +93,6 @@ function redrawSite(site) {
 	.attr("cx", function(d) { return d[0]; })
 	.attr("cy", function(d) { return d[1]; });
 }
-
 
 
 
