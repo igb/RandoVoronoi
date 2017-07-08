@@ -15,8 +15,10 @@ var svg = d3.select(document.body).append('svg')
         .attr('height', height)
     .attr('width', width);
 
+var style = fs.readFileSync('style.css', 'utf8');
 
-svg.append('style').text('.links { stroke: #d4b9da;  stroke-opacity: 0.2;}\n.polygons {fill: none; stroke: #df65b0; }.polygons :sfirst-child {fill: #f00;} .sites { fill: #d4b9da; stroke: #d4b9da; } .sites :first-child {fill: #fff;}');
+
+svg.append('style').text(style);
 
 var sites = d3.range(100)
     .map(function(d) { return [Math.random() * width, Math.random() * height]; });
@@ -52,30 +54,30 @@ function moved() {
 }
 
 function redraw() {
-  var diagram = voronoi(sites);
-  polygon = polygon.data(diagram.polygons()).call(redrawPolygon);
-  link = link.data(diagram.links()), link.exit().remove();
-  link = link.enter().append("line").merge(link).call(redrawLink);
-  site = site.data(sites).call(redrawSite);
+    var diagram = voronoi(sites);
+    polygon = polygon.data(diagram.polygons()).call(redrawPolygon);
+    link = link.data(diagram.links()), link.exit().remove();
+    link = link.enter().append("line").merge(link).call(redrawLink);
+    site = site.data(sites).call(redrawSite);
 }
 
 function redrawPolygon(polygon) {
-  polygon
-      .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; });
+    polygon
+	.attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; });
 }
 
 function redrawLink(link) {
-  link
-      .attr("x1", function(d) { return d.source[0]; })
-      .attr("y1", function(d) { return d.source[1]; })
-      .attr("x2", function(d) { return d.target[0]; })
-      .attr("y2", function(d) { return d.target[1]; });
+    link
+	.attr("x1", function(d) { return d.source[0]; })
+	.attr("y1", function(d) { return d.source[1]; })
+	.attr("x2", function(d) { return d.target[0]; })
+	.attr("y2", function(d) { return d.target[1]; });
 }
 
 function redrawSite(site) {
-  site
-      .attr("cx", function(d) { return d[0]; })
-      .attr("cy", function(d) { return d[1]; });
+    site
+	.attr("cx", function(d) { return d[0]; })
+	.attr("cy", function(d) { return d[1]; });
 }
 
 
@@ -88,7 +90,7 @@ fs.writeFile("/tmp/foo1.svg", svg.node().outerHTML, function(err) {
 	if(err) {
 	    return console.log(err);
 	}
-
+	
 	console.log("The file was saved!");
     }); 
 
@@ -102,6 +104,6 @@ svg_to_png.convert("/tmp/foo1.svg", "/tmp/") // async, returns promise
 	});
 
 
-//console.log(svg.node().outerHTML);  
+
 
 
