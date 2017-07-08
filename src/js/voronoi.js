@@ -1,10 +1,11 @@
 var fs = require('fs');
 var d3 = require('d3');
 var jsdom = require('node-jsdom');
-var cheerio = require("cheerio");
 
-    var document = jsdom.jsdom();
-    var body = d3.select(document);
+
+var document = jsdom.jsdom();
+
+
 
 var height = 600;
 var width = 600;
@@ -83,8 +84,24 @@ function redrawSite(site) {
 
 
 
+fs.writeFile("/tmp/foo1.svg", svg.node().outerHTML, function(err) {
+	if(err) {
+	    return console.log(err);
+	}
+
+	console.log("The file was saved!");
+    }); 
 
 
-var x  = cheerio.load('<html><body><h2 class = "title">Hello world</h2></body></html>');
-console.log(svg.node().outerHTML);  
+
+var svg_to_png = require('svg-to-png');
+ 
+svg_to_png.convert("/tmp/foo1.svg", "/tmp/") // async, returns promise 
+    .then( function(){
+	    console.log("done?");
+	});
+
+
+//console.log(svg.node().outerHTML);  
+
 
