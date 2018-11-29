@@ -1,12 +1,14 @@
 var fs = require('fs');
 var d3 = require('d3');
-var jsdom = require('node-jsdom');
+var jsdom = require('/Users/ibrown/Documents/voronoi/my_node_modules/node-jsdom/lib/jsdom.js');
+var svg_to_png = require('svg-to-png');
 
 
+// fuck Node.js
 eval(fs.readFileSync('./src/js/style.js', 'utf8'));
 eval(fs.readFileSync('./src/js/colorbrewer.js', 'utf8'));
 
-var swatches = [Blues, Greens, Greys, Oranges, Purples, Reds];
+var swatches = [Blues, Greens, Greys, Oranges, Purples, Reds, BuGn, BuPu, GnBu, OrRd, PuBu, PuBuGn, PuRd, RdPu, YlGn, YlGnBu, YlOrBr, YlOrRd, BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral,Paired, Set3 ];
 
 
 
@@ -14,7 +16,7 @@ var swatch =  swatches[Math.floor(Math.random() * (swatches.length))];
 console.log(swatch);
 
 var linkStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
-var linkStrokeOpacity = "0.2";
+var linkStrokeOpacity = "0.5";
 var polygonFillColor = swatch[Math.floor(Math.random() * (swatch.length))];
 var polygonStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
 var polygonStrokeWidth = Math.floor(Math.random() * (6) + 1) + "px";
@@ -24,7 +26,7 @@ var sitesFillOpacity, sitesStrokeOpacity = "1.0";
 if ( Math.floor(Math.random() * (2)) == 0  ) {
   linkStrokeOpacity = "0.0";
   sitesFillOpacity, sitesStrokeOpacity = "0.0";
- console.log("not showing links");
+  console.log("not showing links");
 }
 
 
@@ -45,8 +47,10 @@ var style = getStyle(linkStrokeColor, linkStrokeOpacity, polygonFillColor, polyg
 
 
 svg.append('style').text(style);
+var cellNo = Math.floor(Math.random() * 1000 ) +  10;
 
-var sites = d3.range(100)
+    console.log(cellNo);
+var sites = d3.range(cellNo)
     .map(function(d) { return [Math.random() * width, Math.random() * height]; });
 
 var voronoi = d3.voronoi()
@@ -109,7 +113,7 @@ fs.writeFile("/tmp/foo1.svg", svg.node().outerHTML, function(err) {
 
 
 
-var svg_to_png = require('svg-to-png');
+
  
 svg_to_png.convert("/tmp/foo1.svg", "/tmp/") // async, returns promise 
     .then( function(){

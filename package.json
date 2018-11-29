@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "A utility for creating voronoi diagrams with D3 and converting SVGs to PNGs",
   "dependencies": {
-    "d3": "*"
+    "contextify": "^1.0.0",
+    "d3": "^5.7.0",
+    "install": "^0.12.2",
+    "node-gyp": "^3.8.0",
+    "npm": "^6.4.1",
+    "svg-to-png": "^3.1.2"
   }
 }

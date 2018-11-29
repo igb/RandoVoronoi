@@ -1,11 +1,13 @@
+
 .links { 
-       	 stroke:#d4b9da;
-	 stroke-opacity: 0.2;
+       	 stroke:#9ebcda;
+	  stroke-opacity: 0.0;
               }
 
 .polygons {
-	  fill: none;
-	  stroke: #df65b0;
+	  fill: #4d004b;
+	  stroke:  #810f7c;
+	  stroke-width: 2px;
 	  }
 
 .polygons :sfirst-child {
@@ -13,10 +15,9 @@
 }
 
 .sites { 
-       fill: #d4b9da; 
-       stroke: #d4b9da; 
+  stroke-opacity: 0.0;
+  fill-opacity: 0.0;
+       fill: #e0ecf4; 
+       stroke: #e0ecf4; 
 }
 
-.sites :first-child {
-       fill: #fff;
-}
