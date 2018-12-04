@@ -1,12 +1,12 @@
 var fs = require('fs');
 var d3 = require('d3');
-var jsdom = require('/Users/ibrown/Documents/voronoi/my_node_modules/node-jsdom/lib/jsdom.js');
+var jsdom = require('../../my_node_modules/node-jsdom/lib/jsdom.js');
 var svg_to_png = require('svg-to-png');
 
-
+console.log(process.cwd());
 // fuck Node.js
-eval(fs.readFileSync('./src/js/style.js', 'utf8'));
-eval(fs.readFileSync('./src/js/colorbrewer.js', 'utf8'));
+eval(fs.readFileSync('../src/js/style.js', 'utf8'));
+eval(fs.readFileSync('../src/js/colorbrewer.js', 'utf8'));
 
 var swatches = [Blues, Greens, Greys, Oranges, Purples, Reds, BuGn, BuPu, GnBu, OrRd, PuBu, PuBuGn, PuRd, RdPu, YlGn, YlGnBu, YlOrBr, YlOrRd, BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral,Paired, Set3 ];
 
@@ -114,12 +114,11 @@ fs.writeFile("/tmp/foo1.svg", svg.node().outerHTML, function(err) {
 
 
 
- 
+
 svg_to_png.convert("/tmp/foo1.svg", "/tmp/") // async, returns promise 
     .then( function(){
 	    console.log("done?");
 	});
-
 
 
 

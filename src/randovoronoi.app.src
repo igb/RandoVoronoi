@@ -1,0 +1,14 @@
+{application, randovoronoi,
+ [
+  {description, "An Erlang twitter bot for posting voronoi tesselation images"},
+  {vsn, "1.1"},
+  {modules, [
+             randovoronoi
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
