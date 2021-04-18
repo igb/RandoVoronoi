@@ -3,31 +3,74 @@ var d3 = require('d3');
 var jsdom = require('../../my_node_modules/node-jsdom/lib/jsdom.js');
 var svg_to_png = require('svg-to-png');
 
-console.log(process.cwd());
+
 // fuck Node.js
-eval(fs.readFileSync('../src/js/style.js', 'utf8'));
-eval(fs.readFileSync('../src/js/colorbrewer.js', 'utf8'));
+try {
+    eval(fs.readFileSync('../src/js/style.js', 'utf8'));
+    eval(fs.readFileSync('../src/js/colorbrewer.js', 'utf8'));
+    eval(fs.readFileSync('../src/js/ntc.js', 'utf8'));
+
+} catch(myError) {
+    eval(fs.readFileSync('./src/js/style.js', 'utf8'));
+    eval(fs.readFileSync('./src/js/colorbrewer.js', 'utf8'));
+    eval(fs.readFileSync('./src/js/ntc.js', 'utf8'));
+
+}
 
 var swatches = [Blues, Greens, Greys, Oranges, Purples, Reds, BuGn, BuPu, GnBu, OrRd, PuBu, PuBuGn, PuRd, RdPu, YlGn, YlGnBu, YlOrBr, YlOrRd, BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral,Paired, Set3 ];
 
 
 
 var swatch =  swatches[Math.floor(Math.random() * (swatches.length))]; 
-console.log(swatch);
+
 
 var linkStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
-var linkStrokeOpacity = "0.5";
+var linkStrokeOpacity = "1.0";
+
 var polygonFillColor = swatch[Math.floor(Math.random() * (swatch.length))];
 var polygonStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
+while (polygonFillColor == polygonStrokeColor) {
+    polygonStrokeColor = swatch[Math.floor(Math.random() * (swatch.length))];
+}
 var polygonStrokeWidth = Math.floor(Math.random() * (6) + 1) + "px";
 var sitesFillColor, sitesStrokeColor  = swatch[Math.floor(Math.random() * (swatch.length))];
 var sitesFillOpacity, sitesStrokeOpacity = "1.0";
 
-if ( Math.floor(Math.random() * (2)) == 0  ) {
-  linkStrokeOpacity = "0.0";
-  sitesFillOpacity, sitesStrokeOpacity = "0.0";
-  console.log("not showing links");
+
+
+
+function convertRgbToHex(rgb) { 
+
+    var hex = Number(rgb).toString(16);
+    if (hex.length < 2) {
+	hex = "0" + hex;
+    }
+    return hex.toUpperCase();
+};
+
+function getHexFromRgbString(rgbString) {
+    var color = rgbString.substr(4, rgbString.length - 5).split(",");
+    return "#" + convertRgbToHex(color[0]) + convertRgbToHex(color[1]) + convertRgbToHex(color[2]);  
 }
+
+
+function getColorDescription(color) {
+    var hex = getHexFromRgbString(color);
+    return ntc.name(hex)[1].toLowerCase().replace(/ /g, "-") + "-colored (" + hex  + ")";
+}
+
+
+var linksDescription = "";
+
+if ( Math.floor(Math.random() * (2)) == 0  ) {
+    linkStrokeOpacity = "0.0";
+    sitesFillOpacity, sitesStrokeOpacity = "0.0";
+   
+   
+    
+} else {
+    linksDescription = " This particular tessellation shows the " + getColorDescription(sitesStrokeColor) + " points (or 'sites') around which the voronoi tiles are formed with edges, drawn in a " + getColorDescription(linkStrokeColor)+ " stroke, connecting each point to it's closest neighbors."  
+	}
 
 
 var document = jsdom.jsdom();
@@ -49,7 +92,9 @@ var style = getStyle(linkStrokeColor, linkStrokeOpacity, polygonFillColor, polyg
 svg.append('style').text(style);
 var cellNo = Math.floor(Math.random() * 1000 ) +  10;
 
-    console.log(cellNo);
+var description = "A voronoi tessellation, consisting of " + cellNo +  " cells, drawn upon a " + getColorDescription(polygonFillColor) + " field. The cell borders are drawn in a " + getColorDescription(polygonStrokeColor) + " stroke." + linksDescription;
+
+
 var sites = d3.range(cellNo)
     .map(function(d) { return [Math.random() * width, Math.random() * height]; });
 
@@ -108,7 +153,6 @@ fs.writeFile("/tmp/foo1.svg", svg.node().outerHTML, function(err) {
 	    return console.log(err);
 	}
 	
-	console.log("The file was saved!");
     }); 
 
 
@@ -117,7 +161,7 @@ fs.writeFile("/tmp/foo1.svg", svg.node().outerHTML, function(err) {
 
 svg_to_png.convert("/tmp/foo1.svg", "/tmp/") // async, returns promise 
     .then( function(){
-	    console.log("done?");
+	    console.log(description.substr(0, 420));
 	});
 
 
