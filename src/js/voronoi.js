@@ -1,7 +1,8 @@
 var fs = require('fs');
-var d3 = require('d3');
-var jsdom = require('../../my_node_modules/node-jsdom/lib/jsdom.js');
 var svg_to_png = require('svg-to-png');
+
+const D3Node = require('d3-node')
+const d3n = new D3Node()      // initializes D3 with container element
 
 
 // fuck Node.js
@@ -73,21 +74,18 @@ if ( Math.floor(Math.random() * (2)) == 0  ) {
 	}
 
 
-var document = jsdom.jsdom();
+
 
 
 
 var height = 1024;
 var width = 1024;
 
-var svg = d3.select(document.body).append('svg')
-    .attr('xmlns', 'http://www.w3.org/2000/svg')
-        .attr('height', height)
-    .attr('width', width);
+var svg =  d3n.createSVG(height,width) 
 
 var style = getStyle(linkStrokeColor, linkStrokeOpacity, polygonFillColor, polygonStrokeColor, polygonStrokeWidth, sitesFillColor, sitesStrokeColor, sitesFillOpacity, sitesStrokeOpacity);
 
-
+const d3 = d3n.d3;
 
 svg.append('style').text(style);
 var cellNo = Math.floor(Math.random() * 1000 ) +  10;
